@@ -92,7 +92,7 @@ var requestAnimationFrame = window.requestAnimationFrame;
 var cancelAnimationFrame = window.cancelAnimationFrame;
 // loop through vendor prefixes and get prefixed rAF and cAF
 var prefix;
-for( var i = 0; i < prefixes.length; i++ ) {
+for( var i = 0, l=prefixes.length; i < l; i++ ) {
   if ( requestAnimationFrame && cancelAnimationFrame ) {
     break;
   }
@@ -105,7 +105,7 @@ for( var i = 0; i < prefixes.length; i++ ) {
 // fallback to setTimeout and clearTimeout if either request/cancel is not supported
 if ( !requestAnimationFrame || !cancelAnimationFrame )  {
   requestAnimationFrame = function( callback ) {
-    var currTime = new Date().getTime();
+    var currTime = +new Date();
     var timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
     var id = window.setTimeout( function() {
       callback( currTime + timeToCall );
