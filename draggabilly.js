@@ -134,6 +134,12 @@ function Draggabilly( element, options ) {
   this.element = typeof element == 'string' ?
     document.querySelector( element ) : element;
 
+  if(options.clone) {
+    var clone = this.element.cloneNode(true);
+    this.sourceElement = this.element;
+    this.element = clone;
+  }
+
   if ( jQuery ) {
     this.$element = jQuery( this.element );
   }
