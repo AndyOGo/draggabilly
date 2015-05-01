@@ -172,7 +172,7 @@ Draggabilly.prototype._create = function() {
 
   // set relative positioning
   var style = getStyle( this.element );
-  if ( style.position != 'relative' && style.position != 'absolute' ) {
+  if ( style.position !== 'relative' && style.position !== 'absolute' ) {
     this.element.style.position = 'relative';
   }
 
