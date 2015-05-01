@@ -362,8 +362,8 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   dragY = this.containDrag( 'y', dragY, gridY );
 
   // constrain to axis
-  dragX = this.options.axis == 'y' ? 0 : dragX;
-  dragY = this.options.axis == 'x' ? 0 : dragY;
+  dragX = this.options.axis === 'y' ? 0 : dragX;
+  dragY = this.options.axis === 'x' ? 0 : dragY;
 
   this.position.x = this.startPosition.x + dragX;
   this.position.y = this.startPosition.y + dragY;
@@ -383,7 +383,7 @@ Draggabilly.prototype.containDrag = function( axis, drag, grid ) {
   if ( !this.options.containment ) {
     return drag;
   }
-  var measure = axis == 'x' ? 'width' : 'height';
+  var measure = axis === 'x' ? 'width' : 'height';
 
   var rel = this.relativeStartPosition[ axis ];
   var min = applyGrid( -rel, grid, 'ceil' );
