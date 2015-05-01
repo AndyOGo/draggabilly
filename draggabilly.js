@@ -72,13 +72,13 @@ var getStyle = defView && defView.getComputedStyle ?
 
 
 // http://stackoverflow.com/a/384380/182183
-var isElement = ( typeof HTMLElement == 'object' ) ?
+var isElement = ( typeof HTMLElement === 'object' ) ?
   function isElementDOM2( obj ) {
     return obj instanceof HTMLElement;
   } :
   function isElementQuirky( obj ) {
-    return obj && typeof obj == 'object' &&
-      obj.nodeType == 1 && typeof obj.nodeName == 'string';
+    return obj && typeof obj === 'object' &&
+      obj.nodeType === 1 && typeof obj.nodeName === 'string';
   };
 
 // -------------------------- requestAnimationFrame -------------------------- //
