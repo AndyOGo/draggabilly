@@ -279,7 +279,7 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   if(options && options.atBottomLine) {
     this.startPointer = pointer;
   }
-  
+
   // bind move and end events
   this._bindPostStartEvents( event );
   classie.add( this.element, 'is-pointer-down' );
@@ -324,8 +324,10 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.measureContainment();
 
   if(options && options.atBottomLine) {
-    this.position.x = pointer.pageX - this.startPointer.offsetX;
-    this.position.y = pointer.pageY - this.startPointer.offsetY;
+    var startPointer = this.startPointer;
+
+    this.position.x = startPointer.pageX - startPointer.offsetX;
+    this.position.y = startPointer.pageY - startPointer.offsetY;
   }
 
   // position _when_ drag began
