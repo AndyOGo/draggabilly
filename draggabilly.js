@@ -134,7 +134,7 @@ function Draggabilly( element, options ) {
   this.element = typeof element == 'string' ?
     document.querySelector( element ) : element;
 
-  if(options.clone) {
+  if(options && options.atBottomLine) {
     var clone = this.element.cloneNode(true);
     this.sourceElement = this.element;
     this.element = clone;
@@ -462,11 +462,14 @@ Draggabilly.prototype.setLeftTop = function() {
   this.element.style.top  = this.position.y + 'px';
 };
 
+// hardware accelerated position
+Draggabilly.prototype.setTranslate = function() {
+  // position with transform
+  this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
+};
+
 Draggabilly.prototype.positionDrag = transformProperty ?
-  function() {
-    // position with transform
-    this.element.style[ transformProperty ] = translate( this.dragPoint.x, this.dragPoint.y );
-  } : Draggabilly.prototype.setLeftTop;
+  Draggabilly.prototype.setTranslate : Draggabilly.prototype.setLeftTop;
 
 // ----- staticClick ----- //
 
