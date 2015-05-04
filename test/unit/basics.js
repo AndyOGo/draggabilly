@@ -10,7 +10,9 @@ test( 'init', function( assert ) {
   h2.textContent = 'Drag this element';
   classie.add( testElem, 'running' );
   var draggieElem =  testElem.querySelector('.draggie');
-  var draggie = new Draggabilly( draggieElem );
+  var draggie = new Draggabilly( draggieElem, {
+    atBottomLine: true
+  });
 
   equal( draggieElem.style.position, 'relative', 'position: relative set' );
 
