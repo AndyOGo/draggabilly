@@ -134,12 +134,6 @@ function Draggabilly( element, options ) {
   this.element = typeof element == 'string' ?
     document.querySelector( element ) : element;
 
-  if(options && options.atBottomLine) {
-    var clone = this.element.cloneNode(true);
-    this.sourceElement = this.element;
-    this.element = clone;
-  }
-
   if ( jQuery ) {
     this.$element = jQuery( this.element );
   }
@@ -176,10 +170,16 @@ Draggabilly.prototype._create = function() {
 
   this.startPosition = extend( {}, this.position );
 
-  // set relative positioning
-  var style = getStyle( this.element );
-  if ( style.position !== 'relative' && style.position !== 'absolute' ) {
-    this.element.style.position = 'relative';
+  var options = this.options;
+
+  if(options && options.atBottomLine) {
+
+  } else {
+    // set relative positioning
+    var style = getStyle( this.element );
+    if ( style.position !== 'relative' && style.position !== 'absolute' ) {
+      this.element.style.position = 'relative';
+    }
   }
 
   this.enable();
@@ -299,8 +299,28 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
   }
+  var options = this.options;
+
+  if(options && options.atBottomLine) {
+    var clone = this.element.cloneNode(true);
+    this.clone = clone;
+
+    document.body.appendChild(clone);
+
+    classie.add( this.clone, 'is-clone' );
+
+    this._element = this.element;
+    this.element = clone;
+  }
+
   this._getPosition();
   this.measureContainment();
+
+  if(options && options.atBottomLine) {
+    this.position.x = pointer.pageX - pointer.offsetX;
+    this.position.y = pointer.pageY - pointer.offsetY;
+  }
+
   // position _when_ drag began
   this.startPosition.x = this.position.x;
   this.startPosition.y = this.position.y;
@@ -427,6 +447,15 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
     this.setLeftTop();
   }
   classie.remove( this.element, 'is-dragging' );
+
+  var options = this.options;
+  if(options && options.atBottomLine) {
+    document.body.removeChild(this.clone);
+    this.element = this._element;
+
+    delete this._element;
+    delete this.clone;
+  }
   this.dispatchEvent( 'dragEnd', event, [ pointer ] );
 };
 
