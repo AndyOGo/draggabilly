@@ -20,6 +20,10 @@ body {
 
 .test.running h2 { color: #F90; }
 
+.is-clone {
+    position: absolute;
+}
+
 @media screen and (min-width: 640px) {
   .column {
     float: left;
