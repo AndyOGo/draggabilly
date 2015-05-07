@@ -272,7 +272,7 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
  */
 Draggabilly.prototype.setDropTarget = cssPointerEvents ?
   function(event) {
-    event.dropTarget = target;
+    event.dropTarget = event.target;
   } :
   function(event, pointer) {
     var style = this.element.style;
