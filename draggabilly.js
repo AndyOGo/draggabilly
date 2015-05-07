@@ -125,6 +125,12 @@ var transformProperty = getStyleProperty('transform');
 // TODO fix quick & dirty check for 3D support
 var is3d = !!getStyleProperty('perspective');
 
+var cssPointerEvents = !function() {
+  var style = document.createElement('a').style;
+  style.cssText = 'pointer-events:auto';
+  return style.pointerEvents === 'auto';
+}();
+
 var jQuery = window.jQuery;
 
 // --------------------------  -------------------------- //
