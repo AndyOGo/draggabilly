@@ -265,12 +265,12 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
   this.position.y += translateY;
 };
 
-Draggabilly.prototype.setDropTarget(event) {
+Draggabilly.prototype.setDropTarget = function(event) {
   var style = this.element.style;
   style.display = 'none';
   event.target = document.getElementFromPoint(pointer.clientX, pointer.clientY);
   style.display = '';
-}
+};
 
 // -------------------------- events -------------------------- //
 
