@@ -270,12 +270,16 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
  * @param {Event} event
  * @param {Event or Touch} pointer
  */
-Draggabilly.prototype.setDropTarget = function(event, pointer) {
-  var style = this.element.style;
-  style.display = 'none';
-  event.target = document.elementFromPoint(pointer.clientX, pointer.clientY);
-  style.display = '';
-};
+Draggabilly.prototype.setDropTarget = cssPointerEvents ?
+  function(event) {
+    event.dropTarget = target;
+  } :
+  function(event, pointer) {
+    var style = this.element.style;
+    style.display = 'none';
+    event.dropTarget = document.elementFromPoint(pointer.clientX, pointer.clientY);
+    style.display = '';
+  };
 
 // -------------------------- events -------------------------- //
 
@@ -361,9 +365,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.isDragging = true;
   classie.add( this.element, 'is-dragging' );
 
-  if(!cssPointerEvents) {
-    this.setDropTarget(event, pointer);
-  }
+  this.setDropTarget(event, pointer);
 
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
@@ -429,9 +431,7 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   this.dragPoint.x = dragX;
   this.dragPoint.y = dragY;
 
-  if(!cssPointerEvents) {
-    this.setDropTarget(event, pointer);
-  }
+  this.setDropTarget(event, pointer);
 
   this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
 };
@@ -484,9 +484,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   }
   classie.remove( this.element, 'is-dragging' );
 
-  if(!cssPointerEvents) {
-    this.setDropTarget(event, pointer);
-  }
+  this.setDropTarget(event, pointer);
 
   var options = this.options;
   if(options && options.atBottomLine) {
