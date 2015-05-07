@@ -265,7 +265,12 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
   this.position.y += translateY;
 };
 
-Draggabilly.prototype.setDropTarget = function(event) {
+/**
+ * pointer setDropTarget
+ * @param {Event} event
+ * @param {Event or Touch} pointer
+ */
+Draggabilly.prototype.setDropTarget = function(event, pointer) {
   var style = this.element.style;
   style.display = 'none';
   event.target = document.getElementFromPoint(pointer.clientX, pointer.clientY);
@@ -357,7 +362,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   classie.add( this.element, 'is-dragging' );
 
   if(!cssPointerEvents) {
-    this.setDropTarget(event);
+    this.setDropTarget(event, pointer);
   }
 
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
@@ -425,7 +430,7 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   this.dragPoint.y = dragY;
 
   if(!cssPointerEvents) {
-    this.setDropTarget(event);
+    this.setDropTarget(event, pointer);
   }
 
   this.dispatchEvent( 'dragMove', event, [ pointer, moveVector ] );
@@ -480,7 +485,7 @@ Draggabilly.prototype.dragEnd = function( event, pointer ) {
   classie.remove( this.element, 'is-dragging' );
 
   if(!cssPointerEvents) {
-    this.setDropTarget(event);
+    this.setDropTarget(event, pointer);
   }
 
   var options = this.options;
