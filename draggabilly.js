@@ -125,7 +125,7 @@ var transformProperty = getStyleProperty('transform');
 // TODO fix quick & dirty check for 3D support
 var is3d = !!getStyleProperty('perspective');
 
-var cssPointerEvents = !function() {
+var cssPointerEvents = function() {
   var style = document.createElement('a').style;
   style.cssText = 'pointer-events:auto';
   return style.pointerEvents === 'auto';
@@ -273,7 +273,7 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
 Draggabilly.prototype.setDropTarget = function(event, pointer) {
   var style = this.element.style;
   style.display = 'none';
-  event.target = document.getElementFromPoint(pointer.clientX, pointer.clientY);
+  event.target = document.elementFromPoint(pointer.clientX, pointer.clientY);
   style.display = '';
 };
 
