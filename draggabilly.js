@@ -334,7 +334,6 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
     };
   }
 
-
   // bind move and end events
   this._bindPostStartEvents( event );
   classie.add( this.element, 'is-pointer-down' );
