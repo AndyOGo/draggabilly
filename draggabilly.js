@@ -308,6 +308,7 @@ function setDropTargetByCSS(event, pointer) {
   target === that.element) {
     Draggabilly.prototype.setDropTarget = setDropTargetByJS;
     that.setDropTarget(event, pointer);
+    console.log('CSS pointer-events: FAILED', target);
     return;
   }
 
@@ -340,6 +341,7 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   var options = this.options;
 
   if(options && options.handle) {
+    console.log('pointerDown - prevent default action....');
     if ( event.preventDefault ) {
       event.preventDefault();
     } else {
