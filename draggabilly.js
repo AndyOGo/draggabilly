@@ -207,9 +207,7 @@ Draggabilly.prototype._create = function() {
 
   var options = this.options;
 
-  if(options && options.atBottomLine) {
-
-  } else {
+  if(!options || !options.atBottomLine) {
     // set relative positioning
     var style = getStyle( this.element );
     if ( style.position !== 'relative' && style.position !== 'absolute' ) {
@@ -328,13 +326,12 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   var options = this.options;
 
   if(options && options.atBottomLine) {
-    var target = event.target,
-      box = target.getBoundingClientRect(),
+    var box = this.element.getBoundingClientRect(),
       scroll = getScrollOffset();
 
-    this.startCoordinates = {
-      x: box.left + scroll.x + box.left - pointer.clientX,
-      y: box.top + scroll.y + box.top - pointer.clientY
+    this.startPosition = {
+      x: box.left + scroll.x,
+      y: box.top + scroll.y
     };
   }
 
@@ -382,16 +379,12 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this._getPosition();
   this.measureContainment();
 
-  if(options && options.atBottomLine) {
-    var startCoordinates = this.startCoordinates;
-
-    this.position.x = startCoordinates.x;
-    this.position.y = startCoordinates.y;
+  if(!options || !options.atBottomLine) {
+    // position _when_ drag began
+    this.startPosition.x = this.position.x;
+    this.startPosition.y = this.position.y;
   }
 
-  // position _when_ drag began
-  this.startPosition.x = this.position.x;
-  this.startPosition.y = this.position.y;
   // reset left/top style
   this.setLeftTop();
 
