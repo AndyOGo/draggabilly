@@ -328,8 +328,16 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   var options = this.options;
 
   if(options && options.atBottomLine) {
-    this.startPointer = pointer;
+    var target = event.target,
+      box = target.getBoundingClientRect(),
+      scroll = getScrollOffset();
+
+    this.startCoordinates = {
+      x: box.left + scroll.x + box.left - pointer.clientX,
+      y: box.top + scroll.y + box.top - pointer.clienty
+    };
   }
+
 
   // bind move and end events
   this._bindPostStartEvents( event );
@@ -375,10 +383,10 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.measureContainment();
 
   if(options && options.atBottomLine) {
-    var startPointer = this.startPointer;
+    var startCoordinates = this.startCoordinates;
 
-    this.position.x = startPointer.pageX - startPointer.offsetX;
-    this.position.y = startPointer.pageY - startPointer.offsetY;
+    this.position.x = startCoordinates.x;
+    this.position.y = startCoordinates.y;
   }
 
   // position _when_ drag began
