@@ -311,6 +311,8 @@ function setDropTargetByCSS(event, pointer) {
     return;
   }
 
+  console.log('CSS pointer-events: OKAY');
+
   event.dropTarget = event.target;
 }
 
@@ -336,6 +338,14 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   }
 
   var options = this.options;
+
+  if(options && options.handle) {
+    if ( event.preventDefault ) {
+      event.preventDefault();
+    } else {
+      event.returnValue = false;
+    }
+  }
 
   if(options && options.atBottomLine) {
     var box = this.element.getBoundingClientRect(),
