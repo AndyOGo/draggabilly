@@ -443,15 +443,20 @@ Draggabilly.prototype.dragMove = function( event, pointer, moveVector ) {
   var dragX = moveVector.x;
   var dragY = moveVector.y;
 
-  var grid = this.options.grid;
+  var options = this.options;
+  var grid = options.grid;
   var gridX = grid && grid[0];
   var gridY = grid && grid[1];
 
-  dragX = applyGrid( dragX, gridX );
-  dragY = applyGrid( dragY, gridY );
+  if(grid) {
+    dragX = applyGrid(dragX, gridX);
+    dragY = applyGrid(dragY, gridY);
+  }
 
-  dragX = this.containDrag( 'x', dragX, gridX );
-  dragY = this.containDrag( 'y', dragY, gridY );
+  if(options.containment) {
+    dragX = this.containDrag('x', dragX, gridX);
+    dragY = this.containDrag('y', dragY, gridY);
+  }
 
   // constrain to axis
   dragX = this.options.axis === 'y' ? 0 : dragX;
