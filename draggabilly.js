@@ -119,6 +119,35 @@ if ( !requestAnimationFrame || !cancelAnimationFrame )  {
   };
 }
 
+// -------------------------- scrollOffset window -------------------------- //
+var getScrollOffset = 'pageXOffset' in window ? function(w) {
+  w = w || window;
+
+  return {
+    x: w.pageXOffset,
+    y: w.pageYOffset
+  };
+} : document.compatMode === 'CSS1Compat' ? function(w) {
+  w = w || window;
+
+  var d = w.document;
+
+  return {
+    x: d.documentElement.scrollLeft,
+    y: d.documentElement.scrollTop
+  };
+} : function(w) {
+  w = w || window;
+
+  var d = w.document;
+
+  return {
+    x: d.body.scrollLeft,
+    y: d.body.scrollTop
+  };
+};
+// --------------------------  -------------------------- //
+
 // -------------------------- support -------------------------- //
 
 var transformProperty = getStyleProperty('transform');
