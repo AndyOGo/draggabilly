@@ -308,6 +308,7 @@ function setDropTargetByCSS(event, pointer) {
   target === that.element) {
     Draggabilly.prototype.setDropTarget = setDropTargetByJS;
     that.setDropTarget(event, pointer);
+    return;
   }
 
   event.dropTarget = event.target;
