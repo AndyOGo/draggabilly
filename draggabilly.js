@@ -297,27 +297,24 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.setDropTarget = cssPointerEvents ?
-  setDropTargetByCSS : setDropTargetByJS;
+  setDropTargetByCSSDoubleCheck : setDropTargetByJS;
 
-function setDropTargetByCSS(event, pointer, start) {
-  var that = this,
-    target = event.target,
-    handle = that.options.handle;
+  function setDropTargetByCSSDoubleCheck(event, pointer) {
+    var that = this,
+      target = event.target,
+      handle = that.options.handle;
 
-  if(!start && (handle && target.className.indexOf(handle.substr(1)) ||
-  target === that.element)) {
-    Draggabilly.prototype.setDropTarget = setDropTargetByJS;
+    Draggabilly.prototype.setDropTarget = (handle && target.className.indexOf(handle.substr(1)) ||
+      target === that.element) ? setDropTargetByJS : setDropTargetByCSS;
+
     that.setDropTarget(event, pointer);
-    console.log('CSS pointer-events: FAILED', target);
-    return;
   }
 
-  console.log('CSS pointer-events: OKAY');
+  function setDropTargetByCSS(event) {
+    event.dropTarget = event.target;
+  }
 
-  event.dropTarget = event.target;
-}
-
-function setDropTargetByJS(event, pointer, start) {
+function setDropTargetByJS(event, pointer) {
   var style = this.element.style;
   style.display = 'none';
   event.dropTarget = document.elementFromPoint(pointer.clientX, pointer.clientY);
@@ -341,7 +338,6 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   var options = this.options;
 
   if(options && options.handle) {
-    console.log('pointerDown - prevent default action....');
     if ( event.preventDefault ) {
       event.preventDefault();
     } else {
@@ -424,7 +420,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.isDragging = true;
   classie.add( this.element, 'is-dragging' );
 
-  this.setDropTarget(event, pointer, true);
+  this.setDropTarget(event, pointer);
 
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
