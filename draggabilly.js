@@ -217,7 +217,6 @@ Draggabilly.prototype._create = function() {
 
   this.enable();
   this.setHandles();
-
 };
 
 /**
