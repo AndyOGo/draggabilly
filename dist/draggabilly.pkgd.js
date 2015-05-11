@@ -1939,7 +1939,6 @@ Draggabilly.prototype._create = function() {
 
   this.enable();
   this.setHandles();
-
 };
 
 /**
@@ -2056,7 +2055,6 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
       y: box.top + scroll.y
     };
   }
-
 
   // bind move and end events
   this._bindPostStartEvents( event );
