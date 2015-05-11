@@ -299,13 +299,13 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
 Draggabilly.prototype.setDropTarget = cssPointerEvents ?
   setDropTargetByCSS : setDropTargetByJS;
 
-function setDropTargetByCSS(event, pointer) {
+function setDropTargetByCSS(event, pointer, start) {
   var that = this,
     target = event.target,
     handle = that.options.handle;
 
-  if(handle && target.className.indexOf(handle.substr(1)) ||
-  target === that.element) {
+  if(!start && (handle && target.className.indexOf(handle.substr(1)) ||
+  target === that.element)) {
     Draggabilly.prototype.setDropTarget = setDropTargetByJS;
     that.setDropTarget(event, pointer);
     console.log('CSS pointer-events: FAILED', target);
@@ -317,7 +317,7 @@ function setDropTargetByCSS(event, pointer) {
   event.dropTarget = event.target;
 }
 
-function setDropTargetByJS(event, pointer) {
+function setDropTargetByJS(event, pointer, start) {
   var style = this.element.style;
   style.display = 'none';
   event.dropTarget = document.elementFromPoint(pointer.clientX, pointer.clientY);
@@ -424,7 +424,7 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.isDragging = true;
   classie.add( this.element, 'is-dragging' );
 
-  this.setDropTarget(event, pointer);
+  this.setDropTarget(event, pointer, true);
 
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
