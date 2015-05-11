@@ -2019,22 +2019,22 @@ Draggabilly.prototype._addTransformPosition = function( style ) {
  * @param {Event or Touch} pointer
  */
 Draggabilly.prototype.setDropTarget = cssPointerEvents ?
-  setDropTargetByCSS : setDropTargetByJS;
+  setDropTargetByCSSDoubleCheck : setDropTargetByJS;
 
-function setDropTargetByCSS(event, pointer) {
-  var that = this,
-    target = event.target,
-    handle = that.options.handle;
+  function setDropTargetByCSSDoubleCheck(event, pointer) {
+    var that = this,
+      target = event.target,
+      handle = that.options.handle;
 
-  if(handle && target.className.indexOf(handle.substr(1)) ||
-  target === that.element) {
-    Draggabilly.prototype.setDropTarget = setDropTargetByJS;
+    Draggabilly.prototype.setDropTarget = (handle && target.className.indexOf(handle.substr(1)) ||
+      target === that.element) ? setDropTargetByJS : setDropTargetByCSS;
+
     that.setDropTarget(event, pointer);
-    return;
   }
 
-  event.dropTarget = event.target;
-}
+  function setDropTargetByCSS(event) {
+    event.dropTarget = event.target;
+  }
 
 function setDropTargetByJS(event, pointer) {
   var style = this.element.style;
@@ -2058,6 +2058,14 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   }
 
   var options = this.options;
+
+  if(options && options.handle) {
+    if ( event.preventDefault ) {
+      event.preventDefault();
+    } else {
+      event.returnValue = false;
+    }
+  }
 
   if(options && options.atBottomLine) {
     var box = this.element.getBoundingClientRect(),
