@@ -334,7 +334,7 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
 
     this.startCoordinates = {
       x: box.left + scroll.x + box.left - pointer.clientX,
-      y: box.top + scroll.y + box.top - pointer.clienty
+      y: box.top + scroll.y + box.top - pointer.clientY
     };
   }
 
