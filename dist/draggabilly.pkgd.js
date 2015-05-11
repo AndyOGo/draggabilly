@@ -2103,8 +2103,10 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
     this.startPosition.x = this.position.x;
     this.startPosition.y = this.position.y;
   } else {
-    this.positon.x = this.startPosition.x;
-    this.positon.y = this.startPosition.y;
+    this.positon = {
+      x: this.startPosition.x,
+      y: this.startPosition.y
+    };
   }
 
   this.measureContainment();
