@@ -374,14 +374,18 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
     this.element = clone;
   }
 
-  this._getPosition();
-  this.measureContainment();
-
   if(!options || !options.atBottomLine) {
+    this._getPosition();
+
     // position _when_ drag began
     this.startPosition.x = this.position.x;
     this.startPosition.y = this.position.y;
+  } else {
+    this.positon.x = this.startPosition.x;
+    this.positon.y = this.startPosition.y;
   }
+
+  this.measureContainment();
 
   // reset left/top style
   this.setLeftTop();
