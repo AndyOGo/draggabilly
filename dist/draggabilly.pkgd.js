@@ -1841,6 +1841,35 @@ if ( !requestAnimationFrame || !cancelAnimationFrame )  {
   };
 }
 
+// -------------------------- scrollOffset window -------------------------- //
+var getScrollOffset = 'pageXOffset' in window ? function(w) {
+  w = w || window;
+
+  return {
+    x: w.pageXOffset,
+    y: w.pageYOffset
+  };
+} : document.compatMode === 'CSS1Compat' ? function(w) {
+  w = w || window;
+
+  var d = w.document;
+
+  return {
+    x: d.documentElement.scrollLeft,
+    y: d.documentElement.scrollTop
+  };
+} : function(w) {
+  w = w || window;
+
+  var d = w.document;
+
+  return {
+    x: d.body.scrollLeft,
+    y: d.body.scrollTop
+  };
+};
+// --------------------------  -------------------------- //
+
 // -------------------------- support -------------------------- //
 
 var transformProperty = getStyleProperty('transform');
@@ -1900,9 +1929,7 @@ Draggabilly.prototype._create = function() {
 
   var options = this.options;
 
-  if(options && options.atBottomLine) {
-
-  } else {
+  if(!options || !options.atBottomLine) {
     // set relative positioning
     var style = getStyle( this.element );
     if ( style.position !== 'relative' && style.position !== 'absolute' ) {
@@ -2021,8 +2048,15 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
   var options = this.options;
 
   if(options && options.atBottomLine) {
-    this.startPointer = pointer;
+    var box = this.element.getBoundingClientRect(),
+      scroll = getScrollOffset();
+
+    this.startPosition = {
+      x: box.left + scroll.x,
+      y: box.top + scroll.y
+    };
   }
+
 
   // bind move and end events
   this._bindPostStartEvents( event );
@@ -2067,16 +2101,12 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this._getPosition();
   this.measureContainment();
 
-  if(options && options.atBottomLine) {
-    var startPointer = this.startPointer;
-
-    this.position.x = startPointer.pageX - startPointer.offsetX;
-    this.position.y = startPointer.pageY - startPointer.offsetY;
+  if(!options || !options.atBottomLine) {
+    // position _when_ drag began
+    this.startPosition.x = this.position.x;
+    this.startPosition.y = this.position.y;
   }
 
-  // position _when_ drag began
-  this.startPosition.x = this.position.x;
-  this.startPosition.y = this.position.y;
   // reset left/top style
   this.setLeftTop();
 
