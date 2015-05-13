@@ -420,8 +420,6 @@ Draggabilly.prototype.dragStart = function( event, pointer ) {
   this.isDragging = true;
   classie.add( this.element, 'is-dragging' );
 
-  this.setDropTarget(event, pointer);
-
   this.dispatchEvent( 'dragStart', event, [ pointer ] );
   // start animation
   this.animate();
