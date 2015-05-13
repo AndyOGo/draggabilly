@@ -148,6 +148,35 @@ var getScrollOffset = 'pageXOffset' in window ? function(w) {
 };
 // --------------------------  -------------------------- //
 
+// -------------------------- contains DOM node -------------------------- //
+
+var ua = navigator.userAgent.toLowerCase(),
+isBrokenSafari = !!~ua.indexOf('safari') && !~ua.indexOf('chrome') && function() {
+  var version = ua.match(/safari\/(\d+)/ig);
+
+  return !version || version.length === 1 ? !1 : version[1] > 521 ? !1 : !0;
+}(),
+
+// IE / Safari(some) DOM
+IE_Safari = function( parent, descendant ) {
+  return parent === descendant || parent.contains(descendant);
+},
+
+// W3C DOM Level 3
+W3C_L_3 = function( parent, descendant ) {
+  return parent === descendant || !!(parent.compareDocumentPosition(descendant) & 16);
+},
+
+// W3C DOM Level 1
+W3C_L_1 = function( parent, descendant ) {
+  while (descendant && parent !== descendant) {
+    descendant = descendant.parentNode;
+  }
+  return descendant === parent;
+};
+
+// --------------------------  -------------------------- //
+
 // -------------------------- support -------------------------- //
 
 var transformProperty = getStyleProperty('transform');
@@ -301,11 +330,14 @@ Draggabilly.prototype.setDropTarget = cssPointerEvents ?
 
   function setDropTargetByCSSDoubleCheck(event, pointer) {
     var that = this,
+      parent = this.element,
       target = event.target,
-      handle = that.options.handle;
+      contains = 'contains' in parent && !isBrokenSafari && descendant.nodeType === 1 ? IE_Safari :
+      'compareDocumentPosition' in parent ? W3C_L_3 : W3C_L_1;
 
-    Draggabilly.prototype.setDropTarget = (handle && !!~target.className.indexOf(handle.substr(1)) ||
-      target === that.element) ? setDropTargetByJS : setDropTargetByCSS;
+    console.log('######## cssPointerEvents >>>>>>', cssPointerEvents);
+
+    Draggabilly.prototype.setDropTarget = contains(parent, target) ? setDropTargetByJS : setDropTargetByCSS;
 
     that.setDropTarget(event, pointer);
   }
