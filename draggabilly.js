@@ -304,7 +304,7 @@ Draggabilly.prototype.setDropTarget = cssPointerEvents ?
       target = event.target,
       handle = that.options.handle;
 
-    Draggabilly.prototype.setDropTarget = (handle && target.className.indexOf(handle.substr(1)) ||
+    Draggabilly.prototype.setDropTarget = (handle && !!~target.className.indexOf(handle.substr(1)) ||
       target === that.element) ? setDropTargetByJS : setDropTargetByCSS;
 
     that.setDropTarget(event, pointer);
