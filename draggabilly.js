@@ -335,9 +335,6 @@ Draggabilly.prototype.setDropTarget = cssPointerEvents ?
       contains = 'contains' in parent && !isBrokenSafari && target.nodeType === 1 ? IE_Safari :
       'compareDocumentPosition' in parent ? W3C_L_3 : W3C_L_1;
 
-    console.log('######## cssPointerEvents >>>>>>', cssPointerEvents);
-    console.log('######## contains >>>>>>', contains(parent, target));
-
     Draggabilly.prototype.setDropTarget = contains(parent, target) ? setDropTargetByJS : setDropTargetByCSS;
 
     that.setDropTarget(event, pointer);
