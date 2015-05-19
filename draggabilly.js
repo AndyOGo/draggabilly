@@ -331,17 +331,17 @@ Draggabilly.prototype.setDropTarget = cssPointerEvents ?
   function setDropTargetByCSSDoubleCheck(event, pointer) {
     var that = this,
       parent = this.element,
-      target = event.target,
+      target = pointer.target,
       contains = 'contains' in parent && !isBrokenSafari && target.nodeType === 1 ? IE_Safari :
       'compareDocumentPosition' in parent ? W3C_L_3 : W3C_L_1;
 
-    Draggabilly.prototype.setDropTarget = contains(parent, target) ? setDropTargetByJS : setDropTargetByCSS;
+    Draggabilly.prototype.setDropTarget = this.downTarget === target || contains(parent, target) ? setDropTargetByJS : setDropTargetByCSS;
 
     that.setDropTarget(event, pointer);
   }
 
-  function setDropTargetByCSS(event) {
-    event.dropTarget = event.target;
+  function setDropTargetByCSS(event, pointer) {
+    event.dropTarget = pointer.target;
   }
 
 function setDropTargetByJS(event, pointer) {
@@ -384,6 +384,8 @@ Draggabilly.prototype.pointerDown = function( event, pointer ) {
       y: box.top + scroll.y
     };
   }
+
+  this.downTarget = pointer.target;
 
   // bind move and end events
   this._bindPostStartEvents( event );
